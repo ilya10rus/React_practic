@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { server } from '../../bff';
 import styled from 'styled-components';
-import { Button, H2, Input } from '../../components';
-import { Link, Navigate } from 'react-router-dom';
-import { useDispatch, useStore, useSelector } from 'react-redux';
+import { Button, H2, Input, AuthFormError } from '../../components';
+import { Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUserRole } from '../../selectors';
 import { setUser } from '../../actions';
 import { ROLE_ID } from '../../constans';
+import { useResetForm } from '../../hooks';
 
-const authFormShema = yup.object().shape({
+const regFormShema = yup.object().shape({
 	login: yup
 		.string()
 		.required('Заполните логин')
@@ -27,14 +28,16 @@ const authFormShema = yup.object().shape({
 		)
 		.min(6, 'Неверно заполнен логин. Минимум 6 символа')
 		.max(30, 'Неверно заполнен логин. Максимум 30 символов'),
+	passcheck: yup
+		.string()
+		.oneOf([yup.ref('password'), null], 'Пароли не совпадают')
+		.required('Заполните поле повтора пароля'),
 });
 
-const AuthorizationContainer = ({ className }) => {
+const RegistrationContainer = ({ className }) => {
 	const roleId = useSelector(selectUserRole);
 	const dispatch = useDispatch();
 	const [serverError, setServerError] = useState(null);
-	const store = useStore();
-
 	const {
 		register,
 		reset,
@@ -44,25 +47,15 @@ const AuthorizationContainer = ({ className }) => {
 		defaultValues: {
 			login: '',
 			password: '',
+			passcheck: '',
 		},
-		resolver: yupResolver(authFormShema),
+		resolver: yupResolver(regFormShema),
 	});
 
-
-	useEffect(()=>{
-		let currentWasLogout = store.getState().app.wasLogout;
-
-		return store.subscribe(()=>{
-			let previousWasLogout = currentWasLogout
-			currentWasLogout = store.getState().app.wasLogout;
-			if(currentWasLogout !== previousWasLogout){
-				reset()
-			}
-		})
-	}, [reset, store])
+	useResetForm(reset);
 
 	const onSubmit = ({ login, password }) => {
-		server.authorize(login, password).then(({ error, res }) => {
+		server.register(login, password).then(({ error, res }) => {
 			if (error) {
 				setServerError(`Ошибка запроса:${error}`);
 				return;
@@ -72,28 +65,16 @@ const AuthorizationContainer = ({ className }) => {
 		});
 	};
 
-	const formError = errors?.login?.message || errors?.password?.message;
+	const formError =
+		errors?.login?.message || errors?.password?.message || errors?.passcheck?.message;
 	const errorMessage = formError || serverError;
 
-	const StyledLink = styled(Link)`
-		text-align: center;
-		text-decoration: underline;
-		margin: 20px 0;
-		font-size: 18px;
-	`;
-
-	const ErroMessage = styled.div`
-		background-color: #fcadad;
-		font-size: 18px;
-		margin: 10px 0 0;
-		padding: 10px;
-	`;
-	if(roleId !== ROLE_ID.GUEST){
-		return <Navigate to="/"></Navigate>
+	if (roleId !== ROLE_ID.GUEST) {
+		return <Navigate to="/"></Navigate>;
 	}
 	return (
 		<div className={className}>
-			<H2>Авторизация</H2>
+			<H2>Регистрация</H2>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="text"
@@ -113,17 +94,25 @@ const AuthorizationContainer = ({ className }) => {
 						},
 					})}
 				/>
+				<Input
+					type="password"
+					placeholder="Повторите пароль..."
+					{...register('passcheck', {
+						onChange: () => {
+							setServerError(null);
+						},
+					})}
+				/>
 				<Button type="submit" disabled={!!formError}>
-					Авторизоваться
+					Зарегестрироваться
 				</Button>
-				{errorMessage && <ErroMessage>{errorMessage}</ErroMessage>}
-				<StyledLink to="/register">Регистрация</StyledLink>
+				{errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
 			</form>
 		</div>
 	);
 };
 
-export const Authorization = styled(AuthorizationContainer)`
+export const Registration = styled(RegistrationContainer)`
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -134,5 +123,3 @@ export const Authorization = styled(AuthorizationContainer)`
 		width: 260px;
 	}
 `;
-
-/*fcadad*/
