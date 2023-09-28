@@ -19,4 +19,5 @@ export const Button = styled(ButtonContainer)`
 	border-radius: 5px;
 	background-color: #eee;
 	cursor: pointer;
+	margin: ${({ margin }) => margin};
 `;
