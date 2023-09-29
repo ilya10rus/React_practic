@@ -31,7 +31,7 @@ const CommnetContainer = ({ className, postId, id, author, content, publishedAt 
 							id="fa-user-circle-o"
 							margin="0 10px 0 0"
 							size={'18px'}
-							onClick={() => {}}
+							inactive={true}
 						/>
 						{author}
 					</div>
@@ -40,7 +40,7 @@ const CommnetContainer = ({ className, postId, id, author, content, publishedAt 
 							id="fa-calendar-o"
 							margin="0 10px 0 10px"
 							size={'18px'}
-							onClick={() => {}}
+							inactive={true}
 						/>
 						{publishedAt}
 					</div>

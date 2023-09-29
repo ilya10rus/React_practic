@@ -16,6 +16,8 @@ export const postReduser = (state = initialPostState, { type, payload }) => {
 				...state,
 				...payload,
 			};
+		case ACTION_TYPE.RESET_POST_DATA:
+			return initialPostState;
 
 		default:
 			return state;
