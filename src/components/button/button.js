@@ -18,6 +18,6 @@ export const Button = styled(ButtonContainer)`
 	border: 1px #000 solid;
 	border-radius: 5px;
 	background-color: #eee;
-	cursor: pointer;
+	cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 	margin: ${({ margin }) => margin};
 `;
