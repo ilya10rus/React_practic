@@ -18,6 +18,7 @@ const AppColumn = styled.div`
 	min-height: 100%;
 	margin: 0 auto;
 	background-color: #fff;
+	position: relative;
 `;
 
 export const Blog = () => {
