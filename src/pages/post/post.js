@@ -16,6 +16,7 @@ const PostContainer = ({ className }) => {
 	const params = useParams();
 	const requestServer = useServerRequest();
 	const post = useSelector(selectPost);
+
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 
