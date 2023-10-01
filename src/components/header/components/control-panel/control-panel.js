@@ -3,6 +3,7 @@ import { Button, Icon } from '../../../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ROLE_ID } from '../../../../constans';
+//import { checkAccess } from '../../../../utils';
 import {
 	selectUserRole,
 	selectUserLogin,
@@ -34,6 +35,8 @@ const ControlPanelContainer = ({ className }) => {
 		sessionStorage.removeItem('userData');
 	};
 
+	//const isAdmin = checkAccess([ROLE_ID.ADMIN], roleId);
+
 	return (
 		<div className={className}>
 			<RightAligned>
@@ -51,7 +54,6 @@ const ControlPanelContainer = ({ className }) => {
 			</RightAligned>
 			<RightAligned>
 				<Icon id="fa-backward" margin="10px 0 0 0" onClick={() => navigate(-1)} />
-
 				<Link to="/post">
 					<Icon id="fa-file-text-o" margin="10px 0 0 21px" />
 				</Link>

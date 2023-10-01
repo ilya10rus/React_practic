@@ -9,7 +9,7 @@ export const removePostComment = async (hash, postId, id) => {
 
 	if (!access) {
 		return {
-			error: 'Доступ запрещен',
+			error: 'Доступ запрещён',
 			res: null,
 		};
 	}

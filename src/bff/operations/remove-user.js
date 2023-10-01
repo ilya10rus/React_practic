@@ -9,7 +9,7 @@ export const removeUser = async (hash, userId) => {
 
 	if (!access) {
 		return {
-			error: 'Доступ запрещен',
+			error: 'Доступ запрещён',
 			res: null,
 		};
 	}

@@ -9,7 +9,7 @@ export const savePost = async (hash, newPostData) => {
 
 	if (!access) {
 		return {
-			error: 'Доступ запрещен',
+			error: 'Доступ запрещён',
 			res: null,
 		};
 	}

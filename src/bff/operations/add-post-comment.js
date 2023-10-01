@@ -9,7 +9,7 @@ export const addPostComment = async (hash, postId, userId, content) => {
 
 	if (!access) {
 		return {
-			error: 'Доступ запрещен',
+			error: 'Доступ запрещён',
 			res: null,
 		};
 	}
