@@ -1,10 +1,10 @@
 import { ACTION_TYPE } from '../actions';
-import { ROLE_ID } from '../constans';
+import { ROLE } from '../constans';
 
 const initialUserState = {
 	id: null,
 	login: null,
-	roleId: ROLE_ID.GUEST,
+	roleId: ROLE.GUEST,
 	session: null,
 };
 

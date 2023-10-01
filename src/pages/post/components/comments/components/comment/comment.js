@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useServerRequest } from '../../../../../../hooks';
 import { openModal, CLOSE_MODAL, removeCommentAsync } from '../../../../../../actions';
 import { selectUserRole } from '../../../../../../selectors';
-import { ROLE_ID } from '../../../../../../constans';
+import { ROLE } from '../../../../../../constans';
+import PropTypes from 'prop-types';
 
 const CommnetContainer = ({ className, postId, id, author, content, publishedAt }) => {
 	const requestServer = useServerRequest();
 	const userRole = useSelector(selectUserRole);
 	const dispatch = useDispatch();
-	const isAdminOrModerator = [ROLE_ID.ADMIN, ROLE_ID.MODERATOR].includes(userRole);
+	const isAdminOrModerator = [ROLE.ADMIN, ROLE.MODERATOR].includes(userRole);
 
 	const onCommentRemove = (commentId) => {
 		dispatch(
@@ -86,3 +87,11 @@ export const Comment = styled(CommnetContainer)`
 		display: flex;
 	}
 `;
+
+Comment.propTypes = {
+	postId: PropTypes.string.isRequired,
+	id: PropTypes.number.isRequired,
+	author: PropTypes.string.isRequired,
+	content: PropTypes.string.isRequired,
+	publishedAt: PropTypes.string.isRequired,
+};

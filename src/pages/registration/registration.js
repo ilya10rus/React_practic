@@ -9,7 +9,7 @@ import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserRole } from '../../selectors';
 import { setUser } from '../../actions';
-import { ROLE_ID } from '../../constans';
+import { ROLE } from '../../constans';
 import { useResetForm } from '../../hooks';
 
 const regFormShema = yup.object().shape({
@@ -70,7 +70,7 @@ const RegistrationContainer = ({ className }) => {
 		errors?.login?.message || errors?.password?.message || errors?.passcheck?.message;
 	const errorMessage = formError || serverError;
 
-	if (roleId !== ROLE_ID.GUEST) {
+	if (roleId !== ROLE.GUEST) {
 		return <Navigate to="/"></Navigate>;
 	}
 	return (

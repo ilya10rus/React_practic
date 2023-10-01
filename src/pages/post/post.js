@@ -1,13 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Commments, PostContent, PostForm } from './components';
+import { Comments, PostContent, PostForm } from './components';
 import styled from 'styled-components';
 import { useServerRequest } from '../../hooks';
 import { RESET_POST_DATA, loadPostAsync } from '../../actions';
 import { selectPost } from '../../selectors';
 import { Error, PrivatContent } from '../../components';
-import { ROLE_ID } from '../../constans';
+import { ROLE } from '../../constans';
 
 const PostContainer = ({ className }) => {
 	const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const PostContainer = ({ className }) => {
 
 	const SpecificPostPage =
 		isCreating || isEditing ? (
-			<PrivatContent access={[ROLE_ID.ADMIN]}>
+			<PrivatContent access={[ROLE.ADMIN]}>
 				<div className={className}>
 					<PostForm post={post} />
 				</div>
@@ -50,7 +50,7 @@ const PostContainer = ({ className }) => {
 		) : (
 			<div className={className}>
 				<PostContent post={post} />
-				<Commments comments={post.comments} postId={post.id} />
+				<Comments comments={post.comments} postId={post.id} />
 			</div>
 		);
 

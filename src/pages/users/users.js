@@ -3,7 +3,7 @@ import { UserRow, TableRow } from './components';
 import { useServerRequest } from '../../hooks';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ROLE_ID } from '../../constans';
+import { ROLE } from '../../constans';
 import { checkAccess } from '../../utils';
 import { useSelector } from 'react-redux';
 import { selectUserRole } from '../../selectors';
@@ -16,7 +16,7 @@ const UsersContainer = ({ className }) => {
 	const requestServer = useServerRequest();
 	const userRole = useSelector(selectUserRole);
 	useEffect(() => {
-		if (!checkAccess([ROLE_ID.ADMIN], userRole)) {
+		if (!checkAccess([ROLE.ADMIN], userRole)) {
 			return;
 		}
 
@@ -34,7 +34,7 @@ const UsersContainer = ({ className }) => {
 	}, [requestServer, shouldUpdateUserList, userRole]);
 
 	const onUserRemove = (userId) => {
-		if (!checkAccess([ROLE_ID.ADMIN], userRole)) {
+		if (!checkAccess([ROLE.ADMIN], userRole)) {
 			return;
 		}
 		requestServer('removeUser', userId).then(() =>
@@ -44,7 +44,7 @@ const UsersContainer = ({ className }) => {
 
 	return (
 		<div className={className}>
-			<PrivatContent access={[ROLE_ID.ADMIN]} serverError={errorMessage}>
+			<PrivatContent access={[ROLE.ADMIN]} serverError={errorMessage}>
 				<H2>Пользователи</H2>
 				<div>
 					<TableRow>
@@ -55,13 +55,14 @@ const UsersContainer = ({ className }) => {
 
 					{users.map(({ id, login, registeredAt, roleId }) => (
 						<UserRow
+							key={id}
 							id={id}
 							login={login}
 							userRoleId={roleId}
 							registeredAt={registeredAt}
 							onUserRemove={() => onUserRemove(id)}
 							roles={roles.filter(
-								({ id: roleId }) => roleId !== ROLE_ID.GUEST,
+								({ id: roleId }) => roleId !== ROLE.GUEST,
 							)}
 						/>
 					))}

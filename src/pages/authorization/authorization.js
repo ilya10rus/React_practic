@@ -9,7 +9,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserRole } from '../../selectors';
 import { setUser } from '../../actions';
-import { ROLE_ID } from '../../constans';
+import { ROLE } from '../../constans';
 import { useResetForm } from '../../hooks';
 
 const authFormShema = yup.object().shape({
@@ -71,7 +71,7 @@ const AuthorizationContainer = ({ className }) => {
 		font-size: 18px;
 	`;
 
-	if (roleId !== ROLE_ID.GUEST) {
+	if (roleId !== ROLE.GUEST) {
 		return <Navigate to="/"></Navigate>;
 	}
 	return (

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Button, Icon } from '../../../../components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ROLE_ID } from '../../../../constans';
+import { ROLE } from '../../../../constans';
 import { checkAccess } from '../../../../utils';
 import {
 	selectUserRole,
@@ -35,12 +35,12 @@ const ControlPanelContainer = ({ className }) => {
 		sessionStorage.removeItem('userData');
 	};
 
-	const isAdmin = checkAccess([ROLE_ID.ADMIN], roleId);
+	const isAdmin = checkAccess([ROLE.ADMIN], roleId);
 
 	return (
 		<div className={className}>
 			<RightAligned>
-				{roleId === ROLE_ID.GUEST ? (
+				{roleId === ROLE.GUEST ? (
 					<Button>
 						<Link to="login">Войти</Link>
 					</Button>
