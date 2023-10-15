@@ -4,7 +4,6 @@ import { SpecialPanel } from '../special-panel/special-panel';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { sanitizeContent } from './utils';
 import { useDispatch } from 'react-redux';
-import { useServerRequest } from '../../../../hooks/use-user-server';
 import { savePostAsync } from '../../../../actions';
 import { useNavigate } from 'react-router-dom';
 import { PROP_TYPE } from '../../../../constans';
@@ -17,15 +16,14 @@ const PostFormContainer = ({
 	const [titlelValue, setTitleValue] = useState(title);
 	const contentRef = useRef(null);
 	const dispatch = useDispatch();
-	const requestServer = useServerRequest();
+
 	const navigate = useNavigate();
 
 	const onSave = () => {
 		const newContent = sanitizeContent(contentRef.current.innerHTML);
 
 		dispatch(
-			savePostAsync(requestServer, {
-				id,
+			savePostAsync(id, {
 				imageUrl: imageUrlValue,
 				title: titlelValue,
 				content: newContent,

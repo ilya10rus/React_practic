@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useServerRequest } from '../../hooks';
 import { Pagination, PostCard, Search } from './components';
 import { PAGINATION_LIMIT } from '../../constans';
-import { debounce, getLastPageFromLink } from './utils';
+import { debounce } from './utils';
+import { request } from '../../utils/request';
 
 const MainContainer = ({ className }) => {
 	const [posts, setPosts] = useState([]);
@@ -12,16 +12,15 @@ const MainContainer = ({ className }) => {
 	const [shouldSearch, setShouldSearch] = useState(false);
 	const [lastPage, setLastPage] = useState(1);
 
-	const requestServer = useServerRequest();
 	useEffect(() => {
-		requestServer('fetchPosts', searchPhrase, page, PAGINATION_LIMIT).then(
-			({ res: { posts, links } }) => {
-				setPosts(posts);
-				setLastPage(getLastPageFromLink(links));
-			},
-		);
+		request(
+			`posts?search=${searchPhrase}&page=${page}&limit=${PAGINATION_LIMIT}`,
+		).then(({ data: { posts, lastPage } }) => {
+			setPosts(posts);
+			setLastPage(lastPage);
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [requestServer, page, lastPage, shouldSearch]);
+	}, [page, searchPhrase]);
 
 	const startDelayedSearch = useMemo(() => debounce(setShouldSearch, 2000), []);
 
@@ -36,18 +35,16 @@ const MainContainer = ({ className }) => {
 				<Search onChange={onSearch} />
 				{posts.length > 0 ? (
 					<div className="post-list">
-						{posts.map(
-							({ id, title, imageUrl, publishedAt, commentsCount }) => (
-								<PostCard
-									key={id}
-									id={id}
-									title={title}
-									imageUrl={imageUrl}
-									publishedAt={publishedAt}
-									commentsCount={commentsCount}
-								/>
-							),
-						)}
+						{posts.map(({ id, title, imageUrl, publishedAt, comments }) => (
+							<PostCard
+								key={id}
+								id={id}
+								title={title}
+								imageUrl={imageUrl}
+								publishedAt={publishedAt}
+								commentsCount={comments.length}
+							/>
+						))}
 					</div>
 				) : (
 					<div className="no-posts-found"> Статьи не найдены</div>

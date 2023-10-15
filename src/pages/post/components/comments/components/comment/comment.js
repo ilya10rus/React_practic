@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { Icon } from '../../../../../../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useServerRequest } from '../../../../../../hooks';
+
 import { openModal, CLOSE_MODAL, removeCommentAsync } from '../../../../../../actions';
 import { selectUserRole } from '../../../../../../selectors';
 import { ROLE } from '../../../../../../constans';
 import PropTypes from 'prop-types';
 
 const CommnetContainer = ({ className, postId, id, author, content, publishedAt }) => {
-	const requestServer = useServerRequest();
 	const userRole = useSelector(selectUserRole);
 	const dispatch = useDispatch();
 	const isAdminOrModerator = [ROLE.ADMIN, ROLE.MODERATOR].includes(userRole);
@@ -18,7 +17,7 @@ const CommnetContainer = ({ className, postId, id, author, content, publishedAt 
 			openModal({
 				text: 'Удалить комментарий?',
 				onConfirm: () => {
-					dispatch(removeCommentAsync(requestServer, postId, commentId));
+					dispatch(removeCommentAsync(postId, commentId));
 					dispatch(CLOSE_MODAL);
 				},
 

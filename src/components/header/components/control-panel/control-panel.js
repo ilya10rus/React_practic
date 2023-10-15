@@ -4,11 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ROLE } from '../../../../constans';
 import { checkAccess } from '../../../../utils';
-import {
-	selectUserRole,
-	selectUserLogin,
-	selectUserSession,
-} from '../../../../selectors';
+import { selectUserRole, selectUserLogin } from '../../../../selectors';
 import { logout } from '../../../../actions';
 
 const RightAligned = styled.div`
@@ -28,10 +24,9 @@ const ControlPanelContainer = ({ className }) => {
 	const roleId = useSelector(selectUserRole);
 	const login = useSelector(selectUserLogin);
 	const dispatch = useDispatch();
-	const session = useSelector(selectUserSession);
 
 	const onLogout = () => {
-		dispatch(logout(session));
+		dispatch(logout());
 		sessionStorage.removeItem('userData');
 	};
 
